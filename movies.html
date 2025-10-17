@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/8e9812a67c.js" crossorigin="anonymous"></script>
+    <script src="/movies.js"></script>
+</head>
+<body class="page__movies"> 
+    <div class="overlay">
+      <section id="landing" class="movies__landing"> 
+        <div class="nav">
+          <figure class="nav__logo--wrapper">
+            <img
+              src="./assets/whitelogo.39850b27.png"
+              alt="blinker logo"
+              class="nav__logo"
+            />
+          </figure>
+          <ul class="nav__links--wrapper">
+            <li class="nav__links">
+              <a class="nav__link
+              nav__link--white
+              link__hover-effect
+              link__hover-effect--white"
+              href="./index.html">Home
+              </a>
+            </li>
+            <li class="nav__links">
+              <a class="nav__link
+              nav__link--white
+              link__hover-effect
+              link__hover-effect--white"
+              href="#">Find your movie
+            </a>
+            </li>
+            <li class="nav__links">
+              <button class="nav__link contact-btn contact-btn--white" href="#">CONTACT</button>
+            </li>
+          </ul>
+          <div class="phone__nav">
+          <div class="bento-menu" onclick="toggleMenu()">
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+              <div class="bento-menu__dot bento-menu__dot--movies"></div>
+          </div>
+          </div>
+          <div class="show__menu">
+            <a class="nav__link phone__nav--link" href="./index.html">Home</a>
+            <a class="nav__link phone__nav--link" href="./movies.html">Find your movie</a>
+            <a class="nav__link phone__nav--link" href="#">Contact</a>
+          </div>
+        </div>
+        <header class="movies__header"> 
+          <h1 class="movies__header--title">Browse Movies</h1> 
+          <div class="input__wrapper">
+            <input
+              id="search__input"
+              type="text"
+              placeholder="Search Movies"
+            />
+            <div class="search__btn--wrapper" onclick="handleSearch()">
+              <svg
+                data-v-2a11e7ca=""
+                aria-hidden="true"
+                focusable="false"
+                data-prefix="fas"
+                data-icon="search"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                class="svg-inline--fa fa-search fa-w-16"
+              >
+                <path
+                  data-v-2a11e7ca=""
+                  fill="currentColor"
+                  d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"
+                  class=""
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </header>
+      </section>
+    </div>
+    <section class="search__results">
+      <div class="filter__content">
+        <h1 class="filter__title">Search results:</h1>
+        <div class="year__filter--wrapper">
+          <h2 class="year__filter--title">
+            Year range:
+            <span class="accent-color">0 - 2030</span>
+          </h2>
+          <input
+            type="range"
+            id="minSlider"
+            min="0"
+            max="2030"
+            value="0"
+            step="1"
+          />
+          <input
+            type="range"
+            id="maxSlider"
+            min="0"
+            max="2030"
+            value="2000"
+            step="1"
+          />
+          <div class="slider__wrapper">
+            <div class="year-slider"> 
+            
+              <div class="year-slider__runway">
+                <div id="sliderBar" class="year-slider__bar"></div>
+                <div
+                  id="minHandle"
+                  class="year-slider__btn--wrapper"
+                  style="left: 0%"
+                >
+                  <div class="year-tooltip year-slider__btn"></div>
+                </div>
+                <div
+                  id="maxHandle"
+                  class="year-slider__btn--wrapper"
+                  style="left: 100%"
+                >
+                  <div class="year-tooltip year-slider__btn"></div>
+                </div>
+                <div>
+                  <div
+                    class="year-slider__stop year-slider__marks-stop"
+                    style="left: 0%"
+                  ></div>
+                  <div
+                    class="year-slider__stop year-slider__marks-stop"
+                    style="left: 100%"
+                  ></div>
+                </div>
+                <div class="year-slider__marks">
+                  <div class="year-slider__marks-text" style="left: 0%">
+                    <span id="minVal">0</span>
+                  </div>
+                  <div class="year-slider__marks-text" style="left: 94%">
+                    <span id="maxVal">2030</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div id="watchMovie" class="watching">
+        <img class="movie movie1" src="./assets/undraw_searching_no1g.svg" alt="" />
+       
+        <div class="loading__dots">
+          <div class="bento-menu__dot loading__dot movie1"></div>
+          
+        </div>
+      </div>
+      <hr /> 
+      <div id="movies__template"> 
+        <div class="movies"> 
+          <div class="movie__overlay">
+            <p class="movie__overlay--text">More Info</p>
+            <p class="movie__overlay--text">→</p>
+          </div>
+          <img class="movie__poster" />
+          <h2 class="movie__title"></h2>
+          <h3 class="movie__year"></h3>
+          <h3 class="movie__imdbID"></h3>
+        </div>
+      </div>
+      <div id="movie-container"></div> 
+    </section>
+  
+</body>
+</html>
+

@@ -1,68 +1,97 @@
-const API_URL = "https://api.auto.dev/vin/WP0AF2A99KS165242?apiKey=sk_ad_K_76uHbkfaZfYKoQ5lH6YDjF";
 
-async function handleSearch() {
-  const input = document.getElementById("search__input").value.trim();
-  const spinner = document.querySelector(".spinner-icon");
-  const searchIcon = document.querySelector(".search-icon");
+const API_KEY = "326d2be7";
+const API_URL = `https://www.omdbapi.com/?apikey=${API_KEY}`;
 
-  // Show spinner, hide search icon
-  spinner.style.display = "inline-block";
-  searchIcon.style.display = "none";
+let allMovies = [];
+
+window.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("search__input");
+  const searchButton = document.getElementById("search__btn");
+
+  // Default fetch for background activity (optional)
+  if (searchInput) fetchMovies("Good");
+
+  //  Handle Search button click
+  if (searchButton) {
+    searchButton.addEventListener("click", handleSearch);
+  }
+
+  //  Handle "Enter" key
+  if (searchInput) {
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSearch();
+      }
+    });
+  }
+});
+
+// Fetch movies (optional: preload visual)
+async function fetchMovies(searchTerm) {
+  const loading = document.getElementById("watchMovie");
+  if (loading) loading.classList.add("loading");
 
   try {
-    const response = await fetch(`${API_URL}?query=${encodeURIComponent(input)}`);
-    if (!response.ok) throw new Error("Failed to fetch listings");
-
+    const response = await fetch(`${API_URL}&s=${encodeURIComponent(searchTerm)}`);
     const data = await response.json();
-    console.log("Listings:", data);
 
-    // Show the data on the page (you can customize this)
-    displayListings(data);
+    if (data.Response === "True" && data.Search.length > 0) {
+      allMovies = data.Search;
+      console.log("Fetched:", allMovies);
+      showSuccessAnimation();
+    } else {
+      showError("No movies found.");
+    }
   } catch (error) {
-    console.error("Error fetching data:", error);
-    alert("There was an error fetching the car listings.");
+    console.error("Fetch error:", error);
+    showError("Failed to load movies. Please try again.");
   } finally {
-    // Hide spinner, show search icon
-    spinner.style.display = "none";
-    searchIcon.style.display = "inline-block";
+    if (loading) loading.classList.remove("loading");
   }
 }
 
-function displayListings(data) {
-  let resultsSection = document.getElementById("results");
+//  Handle actual search (both button + Enter)
+function handleSearch() {
+  const searchInput = document.getElementById("search__input");
+  const query = searchInput ? searchInput.value.trim() : "";
 
-  // If it doesn't exist, create it
-  if (!resultsSection) {
-    resultsSection = document.createElement("section");
-    resultsSection.id = "results";
-    resultsSection.style.padding = "2rem";
-    document.body.appendChild(resultsSection);
-  }
-
-  // Clear previous results
-  resultsSection.innerHTML = "";
-
-  if (!data || !data.listings || data.listings.length === 0) {
-    resultsSection.innerHTML = "<p>No cars found. Try a different search.</p>";
+  if (!query) {
+    alert("Please enter a movie name to search!");
     return;
   }
 
-  data.listings.forEach((car) => {
-    const carCard = document.createElement("div");
-    carCard.className = "car-card";
-    carCard.style.border = "1px solid #ccc";
-    carCard.style.padding = "1rem";
-    carCard.style.margin = "1rem 0";
-    carCard.style.borderRadius = "8px";
-    carCard.style.boxShadow = "0 0 10px rgba(0,0,0,0.1)";
+  // Redirect to movies page with query string
+  window.location.href = `movies.html?search=${encodeURIComponent(query)}`;
+}
 
-    carCard.innerHTML = `
-      <h3>${car.year} ${car.make} ${car.model}</h3>
-      <p>Price: $${car.price}</p>
-      <p>Year: ${car.year}</p>
-      ${car.media && car.media.photo_links.length > 0 ? `<img src="${car.media.photo_links[0]}" alt="${car.make} ${car.model}" style="max-width: 300px;" />` : ""}
-    `;
+//  Visual feedback (optional)
+function showSuccessAnimation() {
+  const watchMovie = document.getElementById("watchMovie");
+  if (!watchMovie) return;
+  watchMovie.classList.add("success");
+  setTimeout(() => watchMovie.classList.remove("success"), 800);
+}
 
-    resultsSection.appendChild(carCard);
-  });
+//  Simple error display
+function showError(message) {
+  const watchMovie = document.getElementById("watchMovie");
+  if (watchMovie) {
+    watchMovie.innerHTML = `<p style="text-align:center; color:#6030b1;">${message}</p>`;
+    setTimeout(() => {
+      watchMovie.innerHTML = `
+        <img class="movie movie1" src="./assets/undraw_home-cinema_jdm1.svg" alt="" />
+        <div class="loading__dots"><div class="bento-menu__dot loading__dot movie1"></div></div>
+      `;
+    }, 2000);
+  }
+}
+
+// --- MOBILE MENU TOGGLE ---
+function toggleMenu() {
+  const menu = document.querySelector(".show__menu");
+  const bento = document.querySelector(".bento-menu");
+  if (!menu || !bento) return;
+  menu.classList.toggle("active");
+  bento.classList.toggle("active");
 }

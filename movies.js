@@ -8,13 +8,13 @@ let allMovies = []; // store fetched movies for filtering
 window.addEventListener("DOMContentLoaded", () => {
   fetchMovies("Good"); // default search
   setupYearSlider();
+  setupSearchHandlers();
 });
 
 // Fetch movies from OMDb
 async function fetchMovies(searchTerm) {
   const movieContainer = document.getElementById("movie-container");
   const loading = document.getElementById("watchMovie");
-  const template = document.getElementById("movies__template");
   movieContainer.innerHTML = "";
 
   loading.classList.add("loading");
@@ -57,7 +57,7 @@ function renderMovies(movies) {
   });
 }
 
-// Handle search
+// --- HANDLE SEARCH ---
 function handleSearch() {
   const searchInput = document.getElementById("search__input");
   const query = searchInput.value.trim();
@@ -68,8 +68,23 @@ function handleSearch() {
   }
 }
 
-// --- YEAR SLIDER FUNCTIONALITY ---
+// Add event listeners for click + Enter key
+function setupSearchHandlers() {
+  const searchButton = document.querySelector(".search__btn--wrapper");
+  const searchInput = document.getElementById("search__input");
 
+  // Trigger on click
+  searchButton.addEventListener("click", handleSearch);
+
+  // Trigger on Enter key
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  });
+}
+
+// --- YEAR SLIDER FUNCTIONALITY ---
 function setupYearSlider() {
   const minSlider = document.getElementById("minSlider");
   const maxSlider = document.getElementById("maxSlider");
